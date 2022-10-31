@@ -1,6 +1,6 @@
 //Gramática Etapa 1
 
-G = ({S, IDEN}, {int, char, float, id, ;}, P, S)
+G = ({S, IDEN}, {int, char, float, id, ,, ;}, P, S)
 P = {
         <S> ::= int <IDEN>; | char <IDEN>;| float <IDEN>;
         <IDEN> ::= id[, <IDEN>]
