@@ -10,7 +10,7 @@ t_ignore = ' \t'
 
 # Definicao das funcoes com as expressoes regulares
 def t_DECLARACAO( t ) :
-    r'^(int|float|char)\s+([_a-zA-Z])+[a-zA-Z0-9]*([,]?\s[_a-zA-Z])*[;]{1}$'
+    r'^(int|float|char)\s+([_a-zA-Z])+[_a-zA-Z0-9]*([,]?\s[_a-zA-Z]+[_a-zA-Z0-9])*[;]{1}$'
     return t
 
 def t_error( t ):
