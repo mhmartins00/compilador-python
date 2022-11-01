@@ -1,3 +1,5 @@
+# COMPILADORES - ETAPA 1
+# NOMES: DOUGLAS MOELLER, MURILLO MARTINS
 import sys
 sys.path.append("../..")
 import ply.lex as lex
