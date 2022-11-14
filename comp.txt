@@ -13,7 +13,7 @@ float dado2;
 int abc;
 
 if(a==b){
-    a
+    a = douglas;
 }else{
-    b
+    b = a - murillo;
 }

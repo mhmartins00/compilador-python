@@ -40,12 +40,12 @@ t_MENOR			= r'<'
 t_MAIOR			= r'>'
 
 # Operadores Matemáticos
-t_MAIS   		= r'\+'
+t_MAIS  		= r'\+'
 t_MENOS			= r'-'
 t_MULTIPLICA	= r'\*'
 t_DIVIDE		= r'/'
-t_MAISMAIS		= r'\++'
-t_MENOSMENOS	= r'/--'
+t_MAISMAIS		= r'\+\+'
+t_MENOSMENOS	= r'--'
 
 # Operadores de atribuição
 t_RECEBE		= r'='
@@ -121,17 +121,39 @@ def p_codigo(t):
     t[0]=t[1]
 
 def p_condicao(t):
-    '''condicao : expressao
+    '''condicao : expressao_relacional
     '''
     t[0]=t[1]
 
-def p_expressao(t):
-    '''expressao : IDEN MAIOR IDEN
+def p_comandos(t):
+    '''comandos : atribuicao
+    '''
+    t[0]=t[1]
+
+def p_expressao_relacional(t):
+    '''expressao_relacional : IDEN MAIOR IDEN
                     | IDEN MENOR IDEN
                     | IDEN MAIORIGUAL IDEN
                     | IDEN MENORIGUAL IDEN
                     | IDEN IGUAL IDEN
                     | IDEN DIFERENTE IDEN
+    '''
+    t[0]=t[1]
+
+def p_expressao_matematica(t):
+    '''expressao_matematica : IDEN MENOS IDEN
+                    | IDEN MAIS IDEN
+                    | IDEN MULTIPLICA IDEN
+                    | IDEN DIVIDE IDEN
+                    | IDEN MAISMAIS
+                    | IDEN MENOSMENOS
+    '''
+    t[0]=t[1]
+
+def p_atribuicao(t):
+    '''atribuicao : IDEN RECEBE expressao_matematica fim
+                    | IDEN RECEBE IDEN fim
+                
     '''
     t[0]=t[1]
 
@@ -144,8 +166,8 @@ def p_declaracao_var(t):
     t[0]=t[1]
 
 def p_declaracao_if(t):
-    '''declaracao_if : IF EPAREN condicao DPAREN ECHAVE IDEN DCHAVE
-                    | IF EPAREN condicao DPAREN ECHAVE IDEN DCHAVE ELSE ECHAVE IDEN DCHAVE
+    '''declaracao_if : IF EPAREN condicao DPAREN ECHAVE comandos DCHAVE
+                    | IF EPAREN condicao DPAREN ECHAVE comandos DCHAVE ELSE ECHAVE comandos DCHAVE
     ''' 
     t[0]=t[1]
 
