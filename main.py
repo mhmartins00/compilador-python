@@ -9,10 +9,15 @@ import ply.yacc as yacc
 reserved = {
     'char'  : 'CHAR',
     'int'   : 'INT',
-    'float' : 'FLOAT'
+    'float' : 'FLOAT',
+    'if'    : 'IF',
+    'else'  : 'ELSE',
+    'switch': 'SWITCH',
+    'case'  : 'CASE',
+    'default': 'DEFAULT'
 }
 
-tokens = ['IDEN', 'VIRGULA', 'PONTOVIRGULA']+ list(reserved.values())
+tokens = ['IDEN', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE']+ list(reserved.values())
 
 # caraceres ignorados [nova linha, espaco em branco, tab]
 t_ignore = '\n \t'
@@ -20,11 +25,21 @@ t_ignore = '\n \t'
 # expressao regular para tokens simples
 t_VIRGULA = r','
 t_PONTOVIRGULA = r';'
+t_DOISPONTOS = r':'
+t_EPAREN = r'\('
+t_DPAREN = r'\)'
+t_ECHAVE = r'\{'
+t_DCHAVE = r'\}'
 
 '''
 t_CHAR      = r'char'
 t_INT       = r'int'
 t_FLOAT     = r'float'
+t_IF        = r'if'
+t_ELSE      = r'else'
+t_SWITCH    = r'switch'
+t_CASE      = r'case'
+t_DEFAULT   = r'default'
 '''
 
 # expressao rewgular para identificadores
@@ -59,13 +74,32 @@ def p_variavel(t):
 
 # inicio
 def p_programa(t):
-    'programa : declaracao_var'
+    '''programa : sequencia_codigo
+    '''
+    t[0]=t[1]
+
+def p_sequencia_codigo(t):
+    '''sequencia_codigo : codigo sequencia_codigo
+                        | codigo
+    '''
+    t[0]=t[1]
+
+def p_codigo(t):
+    '''codigo : declaracao_var
+              | declaracao_if
+    '''
     t[0]=t[1]
 
 # para listas de declaracao [int a; int b;]
 def p_declaracao_var(t):
     '''declaracao_var : tipo sequencia_var fim
                       | tipo sequencia_var fim declaracao_var
+                      | declaracao_if
+    ''' 
+    t[0]=t[1]
+
+def p_declaracao_if(t):
+    '''declaracao_if : IF EPAREN IDEN DPAREN ECHAVE IDEN DCHAVE
     ''' 
     t[0]=t[1]
 

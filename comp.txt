@@ -9,3 +9,7 @@ int a,b,c,d;
 float dado2;
 
 int abc;
+
+if(c){
+    a
+}
