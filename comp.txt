@@ -1,0 +1,11 @@
+int a;
+int b;
+
+char c;
+float d;
+char teste_char;
+int a,b,c,d;
+
+float dado2;
+
+int abc;
