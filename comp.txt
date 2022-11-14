@@ -12,7 +12,7 @@ float dado2;
 
 int abc;
 
-if(c){
+if(a==b){
     a
 }else{
     b

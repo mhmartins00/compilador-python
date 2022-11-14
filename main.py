@@ -120,6 +120,21 @@ def p_codigo(t):
     '''
     t[0]=t[1]
 
+def p_condicao(t):
+    '''condicao : expressao
+    '''
+    t[0]=t[1]
+
+def p_expressao(t):
+    '''expressao : IDEN MAIOR IDEN
+                    | IDEN MENOR IDEN
+                    | IDEN MAIORIGUAL IDEN
+                    | IDEN MENORIGUAL IDEN
+                    | IDEN IGUAL IDEN
+                    | IDEN DIFERENTE IDEN
+    '''
+    t[0]=t[1]
+
 # para listas de declaracao [int a; int b;]
 def p_declaracao_var(t):
     '''declaracao_var : tipo sequencia_var fim
@@ -129,8 +144,8 @@ def p_declaracao_var(t):
     t[0]=t[1]
 
 def p_declaracao_if(t):
-    '''declaracao_if : IF EPAREN IDEN DPAREN ECHAVE IDEN DCHAVE
-                    | IF EPAREN IDEN DPAREN ECHAVE IDEN DCHAVE ELSE ECHAVE IDEN DCHAVE
+    '''declaracao_if : IF EPAREN condicao DPAREN ECHAVE IDEN DCHAVE
+                    | IF EPAREN condicao DPAREN ECHAVE IDEN DCHAVE ELSE ECHAVE IDEN DCHAVE
     ''' 
     t[0]=t[1]
 
