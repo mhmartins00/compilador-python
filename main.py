@@ -100,6 +100,7 @@ def p_declaracao_var(t):
 
 def p_declaracao_if(t):
     '''declaracao_if : IF EPAREN IDEN DPAREN ECHAVE IDEN DCHAVE
+                    | IF EPAREN IDEN DPAREN ECHAVE IDEN DCHAVE ELSE ECHAVE IDEN DCHAVE
     ''' 
     t[0]=t[1]
 
