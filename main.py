@@ -17,19 +17,42 @@ reserved = {
     'default': 'DEFAULT'
 }
 
-tokens = ['IDEN', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE']+ list(reserved.values())
+tokens = ['IDEN', 'NUM', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE', 'IGUAL', 'DIFERENTE', 'MENORIGUAL', 'MAIORIGUAL', 'MENOR', 'MAIOR', 'MAIS', 'MENOS', 'MULTIPLICA', 'DIVIDE', 'MAISMAIS', 'MENOSMENOS', 'RECEBE', 'MAISIGUAL', 'MENOSIGUAL', 'MULTIGUAL', 'DIVIDEIGUAL']+ list(reserved.values())
 
 # caraceres ignorados [nova linha, espaco em branco, tab]
 t_ignore = '\n \t'
 
 # expressao regular para tokens simples
-t_VIRGULA = r','
-t_PONTOVIRGULA = r';'
-t_DOISPONTOS = r':'
-t_EPAREN = r'\('
-t_DPAREN = r'\)'
-t_ECHAVE = r'\{'
-t_DCHAVE = r'\}'
+t_VIRGULA       = r','
+t_PONTOVIRGULA  = r';'
+t_DOISPONTOS    = r':'
+t_EPAREN        = r'\('
+t_DPAREN        = r'\)'
+t_ECHAVE        = r'\{'
+t_DCHAVE        = r'\}'
+
+# Operadores Relacionais 
+t_IGUAL         = r'=='
+t_DIFERENTE		= r'!='
+t_MENORIGUAL	= r'<='
+t_MAIORIGUAL	= r'>='
+t_MENOR			= r'<'
+t_MAIOR			= r'>'
+
+# Operadores Matemáticos
+t_MAIS   		= r'\+'
+t_MENOS			= r'-'
+t_MULTIPLICA	= r'\*'
+t_DIVIDE		= r'/'
+t_MAISMAIS		= r'\++'
+t_MENOSMENOS	= r'/--'
+
+# Operadores de atribuição
+t_RECEBE		= r'='
+t_MAISIGUAL		= r'\+='
+t_MENOSIGUAL	= r'-='
+t_MULTIGUAL 	= r'\*='
+t_DIVIDEIGUAL	= r'/='
 
 '''
 t_CHAR      = r'char'
@@ -48,6 +71,13 @@ def t_IDEN(t) :
     if t.value in reserved:
         t.type = reserved[ t.value ]
     return t
+
+def t_NUM(t) :
+    r'[0-9]+([.]{1}[0-9])*'
+    if t.value in reserved:
+        t.type = reserved[ t.value ]
+    return t
+    
 
 def t_error(t):
     print("Caractere ilegal '%s'" % t.value[0])

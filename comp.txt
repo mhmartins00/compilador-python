@@ -1,6 +1,8 @@
 int a;
 int b;
 
+
+
 char c;
 float d;
 char teste_char;
