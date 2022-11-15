@@ -27,15 +27,45 @@ Depois rode o seguinte comando para compilar o arquivo comp.txt
  > python main.py comp.txt 
 
 
-FEITO
- COMANDO IF
- CONDIÇÃO DE IDENTIFICADORES
- COMANDOS DE IDENTIFICADORES
+-----------------
+Duvidas:
 
-FAZER
+- A declaração das variáveis somente no inicio do programa ou também pode ser depois de comandos (dentro de blocos ou outros locais)?
+ex: 
+int a;
 
-CONDIÇÃO DE IDENTIFICADORES COM NUMEROS
-CONDIÇÃO SÓ DE NUMEROS
-COMANDOS DE IDENTIFICADORES COM NUMEROS
-COMANDOS SÓ DE NUMEROS
-SWITCH CASE COMPLETO
+if(a>b){
+    int c;
+    a = c;
+}
+
+int d;
+
+
+- Comando de atribuição somente dentro do bloco de IF e SWITCH, ou pode estar fora?
+ex:
+int a;
+
+a = 2;
+
+if(a>b){
+    int c;
+    a = c;
+}
+
+d = 3;
+
+- Podem existir multiplos comandos dentro de blocos?
+ex:
+int a, b;
+
+if(a>b){
+    a = b;
+    b = a;
+}
+
+- Comando IF pode estar com bloco de <comandos> vazio?
+ex:
+int a, b;
+
+if(a>b){}
