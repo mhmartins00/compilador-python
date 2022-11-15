@@ -59,3 +59,7 @@ switch(nome) {
         sobrenome = nenhum;
     }
 }
+
+if(a < y) {
+    y = 1.05;
+}

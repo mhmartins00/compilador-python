@@ -27,11 +27,19 @@ P = {
 #=====================================#
 
 -- Formato BNF extendido
-G = ({S, IDEN}, {int, char, float, id, ,, ;}, P, S)
+G = ({S, DECLARACAO_VAR, TIPO, IDEN, DECLARACAO_IF, CONDICAO, COMANDOS, EXPRESSAO_MATEMATICA, DECLARACAO_SWITCH, DECLARACAO_CASE, SEQUENCIA_CASE}, {char, int, float, if, else, switch, case, break, default, id, num, ,, ;, :, (, ), {, }, ==, !=, <=, >=, <, >, +, -, *, /, ++, --, =, +=, -=, *=, /=}, P, S)
 P = {
-        <S>    ::= <TIPO> <IDEN>; [<S>]
-		<TIPO> ::= char | float | int
-        <IDEN> ::= id[, <IDEN>]
+        <S>    					::= <DECLARACAO_VAR> [<S>] | <DECLARACAO_IF> [<S>] | <DECLARACAO_SWITCH> [<S>]
+		<DECLARACAO_VAR>    	::= <TIPO> <IDEN>; [<DECLARACAO_VAR>]
+		<TIPO> 					::= char | float | int
+        <IDEN> 					::= id[, <IDEN>]
+		<DECLARACAO_IF>			::= if ( <CONDICAO> ) { <COMANDOS> } [else { <COMANDOS> }]
+		<CONDICAO>				::= (id | num) (> | < | >= | <= | == | !=) (id | num)
+		<COMANDOS>				::= id (= | += | -= | *= | /=) (<EXPRESSAO_MATEMATICA>); | id (++ | --);
+		<EXPRESSAO_MATEMATICA> 	::= (id | num) [(+ | - | * | /) <EXPRESSAO_MATEMATICA>]
+		<DECLARACAO_SWITCH>		::= switch ( id ) { <DECLARACAO_CASE> [default : { <COMANDOS> }] }
+		<DECLARACAO_CASE>		::= <SEQUENCIA_CASE> { <COMANDOS> break; } [<DECLARACAO_CASE>]
+		<SEQUENCIA_CASE>		::= case (id | num) : [<SEQUENCIA_CASE>]
     }
 
 -- Gramática do compilador
