@@ -12,8 +12,50 @@ float dado2;
 
 int abc;
 
-if(a>10){
+if(a>10) {
     a = douglas - lala;
-}else{
-    b = a - 1 + 1;
+} else{
+    b = a;
+}
+
+if(j>=10) {
+    k++;
+} else{
+    k--;
+}
+
+if(m<=10) {
+    n = q + 1;
+} else{
+    n = q - 1;
+}
+
+if(a == a) {
+    a += b + c + 20;
+}
+
+if(a == 1.226562) {
+    a += b + c + 20.87145;
+    nome -= 21;
+}
+
+switch(nome) {
+    case murillo: {
+        sobrenome = martins;
+        break;
+    } 
+    case douglas: {
+        sobrenome = moeller;
+        break;
+    }
+    case 1:
+    case 1.2326551564632134:
+    case coordenadora:
+    case professora: {
+        sobrenome = adelina;
+        break;
+    }
+    default: {
+        sobrenome = nenhum;
+    }
 }

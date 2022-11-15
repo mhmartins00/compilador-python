@@ -7,13 +7,14 @@ import ply.yacc as yacc
 
 #################### ANALISADOR LEXICO ####################
 reserved = {
-    'char'  : 'CHAR',
-    'int'   : 'INT',
-    'float' : 'FLOAT',
-    'if'    : 'IF',
-    'else'  : 'ELSE',
-    'switch': 'SWITCH',
-    'case'  : 'CASE',
+    'char'   : 'CHAR',
+    'int'    : 'INT',
+    'float'  : 'FLOAT',
+    'if'     : 'IF',
+    'else'   : 'ELSE',
+    'switch' : 'SWITCH',
+    'case'   : 'CASE',
+    'break'  : 'BREAK',
     'default': 'DEFAULT'
 }
 
@@ -62,10 +63,11 @@ t_IF        = r'if'
 t_ELSE      = r'else'
 t_SWITCH    = r'switch'
 t_CASE      = r'case'
+t_BREAK'    = r'break',
 t_DEFAULT   = r'default'
 '''
 
-# expressao rewgular para identificadores
+# expressao regular para identificadores
 def t_IDEN(t) :
     r'[_a-zA-Z]+[a-zA-Z0-9_]*'
     if t.value in reserved:
@@ -119,6 +121,7 @@ def p_sequencia_codigo(t):
 def p_codigo(t):
     '''codigo : declaracao_var
               | declaracao_if
+              | declaracao_switch
     '''
     t[0]=t[1]
 
@@ -128,47 +131,56 @@ def p_condicao(t):
     t[0]=t[1]
 
 def p_comandos(t):
-    '''comandos : atribuicao
+    '''comandos : atribuicao comandos
+                | atribuicao
     '''
     t[0]=t[1]
 
 def p_expressao_relacional(t):
-    '''expressao_relacional : expressao MAIOR expressao
-                    | expressao MENOR expressao
-                    | expressao MAIORIGUAL expressao
-                    | expressao MENORIGUAL expressao
-                    | expressao IGUAL expressao
-                    | expressao DIFERENTE expressao
+    '''expressao_relacional : var_ou_num MAIOR var_ou_num
+                            | var_ou_num MENOR var_ou_num
+                            | var_ou_num MAIORIGUAL var_ou_num
+                            | var_ou_num MENORIGUAL var_ou_num
+                            | var_ou_num IGUAL var_ou_num
+                            | var_ou_num DIFERENTE var_ou_num
     '''
     t[0]=t[1]
 
 def p_expressao_matematica(t):
-    '''expressao_matematica : expressao
-                    | expressao operacao_matematica expressao_matematica
+    '''expressao_matematica : var_ou_num
+                            | var_ou_num operacao_matematica expressao_matematica
     '''
     t[0]=t[1]
 
 def p_operacao_matematica(t):
     '''operacao_matematica : MENOS
-                    | MAIS
-                    | MULTIPLICA
-                    | DIVIDE
-                    | MAISMAIS
-                    | MENOSMENOS
+                           | MAIS
+                           | MULTIPLICA
+                           | DIVIDE
     '''
     t[0]=t[1]
 
-def p_expressao(t):
-    '''expressao : IDEN
-                 | num
+def p_var_ou_num(t):
+    '''var_ou_num : variavel
+                  | num
 
+    '''
+    t[0]=t[1]
+
+def p_operador_atribuicao(t):
+    '''operador_atribuicao : RECEBE 
+                           | MAISIGUAL
+                           | MENOSIGUAL
+                           | MULTIGUAL
+                           | DIVIDEIGUAL
     '''
     t[0]=t[1]
 
 def p_atribuicao(t):
-    '''atribuicao : IDEN RECEBE expressao_matematica fim
-                    | IDEN RECEBE expressao fim
-                
+    '''atribuicao : variavel operador_atribuicao expressao_matematica fim
+                  | variavel operador_atribuicao var_ou_num fim
+                  | variavel MAISMAIS fim
+                  | variavel MENOSMENOS fim
     '''
     t[0]=t[1]
 
@@ -176,13 +188,39 @@ def p_atribuicao(t):
 def p_declaracao_var(t):
     '''declaracao_var : tipo sequencia_var fim
                       | tipo sequencia_var fim declaracao_var
-                      | declaracao_if
     ''' 
     t[0]=t[1]
 
 def p_declaracao_if(t):
     '''declaracao_if : IF EPAREN condicao DPAREN ECHAVE comandos DCHAVE
-                    | IF EPAREN condicao DPAREN ECHAVE comandos DCHAVE ELSE ECHAVE comandos DCHAVE
+                     | IF EPAREN condicao DPAREN ECHAVE comandos DCHAVE ELSE ECHAVE comandos DCHAVE
+    ''' 
+    t[0]=t[1]
+
+# switch (variavel) { declaracao_case }
+def p_declaracao_switch(t): 
+    '''declaracao_switch : SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case DCHAVE
+                         | SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case declaracao_default DCHAVE
+    ''' 
+    t[0]=t[1]
+
+# sequencia_case { comandos break; }
+def p_declaracao_case(t): 
+    '''declaracao_case : sequencia_case ECHAVE comandos BREAK fim DCHAVE declaracao_case
+                       | sequencia_case ECHAVE comandos BREAK fim DCHAVE
+    ''' 
+    t[0]=t[1]
+
+# para sequencia de cases [case id: case id: case id:]
+def p_sequencia_case(t): 
+    '''sequencia_case : CASE var_ou_num DOISPONTOS sequencia_case
+                      | CASE var_ou_num DOISPONTOS 
+    ''' 
+    t[0]=t[1]
+
+# default: { comandos }
+def p_declaracao_default(t): 
+    '''declaracao_default : DEFAULT DOISPONTOS ECHAVE comandos DCHAVE
     ''' 
     t[0]=t[1]
 

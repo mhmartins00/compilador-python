@@ -19,3 +19,25 @@ P = {
 		<VARIAVEL> 		 ::= iden
 		<FIM> 			 ::= ;
     }
+
+//Gramática Etapa 2
+
+-- Formato BNF extendido
+G = ({S, IDEN}, {int, char, float, id, ,, ;}, P, S)
+P = {
+        <S>    ::= <TIPO> <IDEN>; [<S>]
+		<TIPO> ::= char | float | int
+        <IDEN> ::= id[, <IDEN>]
+    }
+
+-- Gramática do compilador
+G = ({S, PROGRAMA, DECLARACAO_VAR, SEQUENCIA_VAR, TIPO, VARIAVEL, FIM}, {char, int, float, iden, ,, ;}, P, S)
+P = {
+        <S> 			 ::= <PROGRAMA>
+		<PROGRAMA> 		 ::= <DECLARACAO_VAR>
+		<DECLARACAO_VAR> ::= <TIPO> <SEQUENCIA_VAR> <FIM> | <TIPO> <SEQUENCIA_VAR> <FIM> <DECLARACAO_VAR>
+		<TIPO> 			 ::= char | int | float
+		<SEQUENCIA_VAR>  ::= <VARIAVEL> | <VARIAVEL> , <SEQUENCIA_VAR>
+		<VARIAVEL> 		 ::= iden
+		<FIM> 			 ::= ;
+    }
