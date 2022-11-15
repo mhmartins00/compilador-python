@@ -15,7 +15,8 @@ reserved = {
     'switch' : 'SWITCH',
     'case'   : 'CASE',
     'break'  : 'BREAK',
-    'default': 'DEFAULT'
+    'default': 'DEFAULT',
+    'while'  : 'WHILE'
 }
 
 tokens = ['IDEN', 'NUM', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE', 'IGUAL', 'DIFERENTE', 'MENORIGUAL', 'MAIORIGUAL', 'MENOR', 'MAIOR', 'MAIS', 'MENOS', 'MULTIPLICA', 'DIVIDE', 'MAISMAIS', 'MENOSMENOS', 'RECEBE', 'MAISIGUAL', 'MENOSIGUAL', 'MULTIGUAL', 'DIVIDEIGUAL']+ list(reserved.values())
@@ -122,6 +123,7 @@ def p_codigo(t):
     '''codigo : declaracao_var
               | declaracao_if
               | declaracao_switch
+              | declaracao_while
     '''
     t[0]=t[1]
 
@@ -194,6 +196,11 @@ def p_declaracao_var(t):
 def p_declaracao_if(t):
     '''declaracao_if : IF EPAREN condicao DPAREN ECHAVE comandos DCHAVE
                      | IF EPAREN condicao DPAREN ECHAVE comandos DCHAVE ELSE ECHAVE comandos DCHAVE
+    ''' 
+    t[0]=t[1]
+
+def p_declaracao_while(t):
+    '''declaracao_while : WHILE EPAREN condicao DPAREN ECHAVE comandos DCHAVE
     ''' 
     t[0]=t[1]
 

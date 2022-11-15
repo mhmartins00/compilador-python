@@ -61,5 +61,9 @@ switch(nome) {
 }
 
 if(a < y) {
-    y = 1.05;
+    y = 1.05 + b - 18 * idade;
+}
+
+while(idade == 18){
+    maiordeidade = 1;
 }
