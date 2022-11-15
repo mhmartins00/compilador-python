@@ -143,12 +143,18 @@ def p_expressao_relacional(t):
     t[0]=t[1]
 
 def p_expressao_matematica(t):
-    '''expressao_matematica : expressao MENOS expressao
-                    | expressao MAIS expressao
-                    | expressao MULTIPLICA expressao
-                    | expressao DIVIDE expressao
-                    | expressao MAISMAIS
-                    | expressao MENOSMENOS
+    '''expressao_matematica : expressao
+                    | expressao operacao_matematica expressao_matematica
+    '''
+    t[0]=t[1]
+
+def p_operacao_matematica(t):
+    '''operacao_matematica : MENOS
+                    | MAIS
+                    | MULTIPLICA
+                    | DIVIDE
+                    | MAISMAIS
+                    | MENOSMENOS
     '''
     t[0]=t[1]
 
@@ -161,7 +167,7 @@ def p_expressao(t):
 
 def p_atribuicao(t):
     '''atribuicao : IDEN RECEBE expressao_matematica fim
-                    | IDEN RECEBE IDEN fim
+                    | IDEN RECEBE expressao fim
                 
     '''
     t[0]=t[1]
