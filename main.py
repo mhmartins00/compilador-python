@@ -74,10 +74,10 @@ def t_IDEN(t) :
         t.type = reserved[ t.value ]
     return t
 
+# expressao regular para numeros int ou float
 def t_NUM(t) :
     r'[\d]+(\.[\d]+)?'
-    return t
-    
+    return t  
 
 def t_error(t):
     print("Caractere ilegal '%s'" % t.value[0])
