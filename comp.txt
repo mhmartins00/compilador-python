@@ -12,8 +12,8 @@ float dado2;
 
 int abc;
 
-if(a==b){
+if(a>10){
     a = douglas;
 }else{
-    b = a - murillo;
+    b = a - 1;
 }

@@ -73,9 +73,7 @@ def t_IDEN(t) :
     return t
 
 def t_NUM(t) :
-    r'[0-9]+([.]{1}[0-9])*'
-    if t.value in reserved:
-        t.type = reserved[ t.value ]
+    r'[\d]+(\.[\d]+)?'
     return t
     
 
@@ -91,6 +89,10 @@ lexer = lex.lex()
 def p_fim_instrucao(p):
     'fim : PONTOVIRGULA'
 
+def p_num(t):
+    'num : NUM'
+    t[0]=t[1]
+    
 def p_defincao_tipo(t):
     '''tipo : CHAR
             | INT
@@ -131,22 +133,29 @@ def p_comandos(t):
     t[0]=t[1]
 
 def p_expressao_relacional(t):
-    '''expressao_relacional : IDEN MAIOR IDEN
-                    | IDEN MENOR IDEN
-                    | IDEN MAIORIGUAL IDEN
-                    | IDEN MENORIGUAL IDEN
-                    | IDEN IGUAL IDEN
-                    | IDEN DIFERENTE IDEN
+    '''expressao_relacional : expressao MAIOR expressao
+                    | expressao MENOR expressao
+                    | expressao MAIORIGUAL expressao
+                    | expressao MENORIGUAL expressao
+                    | expressao IGUAL expressao
+                    | expressao DIFERENTE expressao
     '''
     t[0]=t[1]
 
 def p_expressao_matematica(t):
-    '''expressao_matematica : IDEN MENOS IDEN
-                    | IDEN MAIS IDEN
-                    | IDEN MULTIPLICA IDEN
-                    | IDEN DIVIDE IDEN
-                    | IDEN MAISMAIS
-                    | IDEN MENOSMENOS
+    '''expressao_matematica : expressao MENOS expressao
+                    | expressao MAIS expressao
+                    | expressao MULTIPLICA expressao
+                    | expressao DIVIDE expressao
+                    | expressao MAISMAIS
+                    | expressao MENOSMENOS
+    '''
+    t[0]=t[1]
+
+def p_expressao(t):
+    '''expressao : IDEN
+                 | num
+
     '''
     t[0]=t[1]
 
