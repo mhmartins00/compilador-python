@@ -16,7 +16,8 @@ reserved = {
     'case'   : 'CASE',
     'break'  : 'BREAK',
     'default': 'DEFAULT',
-    'while'  : 'WHILE'
+    'while'  : 'WHILE',
+    'for'    : 'FOR'
 }
 
 tokens = ['IDEN', 'NUM', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE', 'IGUAL', 'DIFERENTE', 'MENORIGUAL', 'MAIORIGUAL', 'MENOR', 'MAIOR', 'MAIS', 'MENOS', 'MULTIPLICA', 'DIVIDE', 'MAISMAIS', 'MENOSMENOS', 'RECEBE', 'MAISIGUAL', 'MENOSIGUAL', 'MULTIGUAL', 'DIVIDEIGUAL']+ list(reserved.values())
@@ -124,6 +125,7 @@ def p_codigo(t):
               | declaracao_if
               | declaracao_switch
               | declaracao_while
+              | declaracao_for
     '''
     t[0]=t[1]
 
@@ -186,6 +188,14 @@ def p_atribuicao(t):
     '''
     t[0]=t[1]
 
+def p_encremento_ou_decremento_for(t):
+    '''encremento_ou_decremento_for : variavel operador_atribuicao expressao_matematica
+                                    | variavel operador_atribuicao var_ou_num
+                                    | variavel MAISMAIS
+                                    | variavel MENOSMENOS
+    '''
+    t[0]=t[1]
+
 # para listas de declaracao [int a; int b;]
 def p_declaracao_var(t):
     '''declaracao_var : tipo sequencia_var fim
@@ -199,15 +209,26 @@ def p_declaracao_if(t):
     ''' 
     t[0]=t[1]
 
+# switch (variavel) { declaracao_case }
+def p_declaracao_switch(t): 
+    '''declaracao_switch : SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case DCHAVE
+                         | SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case declaracao_default DCHAVE
+    ''' 
+    t[0]=t[1]
+
 def p_declaracao_while(t):
     '''declaracao_while : WHILE EPAREN condicao DPAREN ECHAVE comandos DCHAVE
     ''' 
     t[0]=t[1]
 
-# switch (variavel) { declaracao_case }
-def p_declaracao_switch(t): 
-    '''declaracao_switch : SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case DCHAVE
-                         | SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case declaracao_default DCHAVE
+# for(parametros_for){<comandos>}
+def p_declaracao_for(t):
+    '''declaracao_for : FOR EPAREN parametros_for DPAREN ECHAVE comandos DCHAVE
+    ''' 
+    t[0]=t[1]
+# ini_variável; condição; incremento/decremento
+def p_parametros_for(t):
+    '''parametros_for : atribuicao condicao fim encremento_ou_decremento_for
     ''' 
     t[0]=t[1]
 
