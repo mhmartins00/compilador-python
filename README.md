@@ -30,8 +30,9 @@ Depois rode o seguinte comando para compilar o arquivo comp.txt
 -----------------
 Duvidas:
 
-- A declaração das variáveis somente no inicio do programa ou também pode ser depois de comandos (dentro de blocos ou outros locais)?
--ok--ex: TANTO FAZ
+~- A declaração das variáveis somente no inicio do programa ou também pode ser depois de comandos (dentro de blocos ou outros locais)?~
+~- ok--ex: TANTO FAZ~
+
 int a;
 
 if(a>b){
@@ -42,8 +43,9 @@ if(a>b){
 int d;
 
 
-- Comando de atribuição somente dentro do bloco de IF e SWITCH, ou pode estar fora?
--ok--ex: SÓ DENTRO
+~- Comando de atribuição somente dentro do bloco de IF e SWITCH, ou pode estar fora?~
+~- ok--ex: SÓ DENTRO~
+
 int a;
 
 a = 2;
@@ -55,8 +57,8 @@ if(a>b){
 
 d = 3;
 
-- Podem existir multiplos comandos dentro de blocos?
---ex: PODE TER
+~- Podem existir multiplos comandos dentro de blocos?~
+~- ok-ex: PODE TER~
 int a, b;
 
 if(a>b){
@@ -64,9 +66,11 @@ if(a>b){
     b = a;
 }
 
-- Comando IF pode estar com bloco de <comandos> vazio?
---ex: COM COMANDOS
+~- Comando IF pode estar com bloco de <comandos> vazio? não~
+~- ok-ex: COM COMANDOS~
+
 int a, b;
---char a[10] fazer
 
 if(a>b){}
+
+- NOK-char a[10] (aceitando com float ao invés só de INT)
