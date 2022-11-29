@@ -8,6 +8,10 @@ float d;
 char teste_char;
 int a,b,c,d;
 
+char z[0];
+char a, b[10], b[10];
+char d, c[1], e;
+
 float dado2;
 
 int abc;
