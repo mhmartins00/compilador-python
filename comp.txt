@@ -8,14 +8,20 @@ float d;
 char teste_char;
 int a,b,c,d;
 
+char z[0];
+char a, b[10], c[10];
+char d, c[1], e;
+
 float dado2;
 
 int abc;
 
 if(a>10) {
     a = douglas - lala;
+    a = teste - abab;
 } else{
     b = a;
+    a++;
 }
 
 if(j>=10) {
@@ -66,9 +72,16 @@ if(a < y) {
 
 while(idade == 18){
     maiordeidade = 1;
+    menor = nao;
 }
 
 
 for(i=1+2; i<10; i=i+3){
     contador = contador + i;
+    zero++;
+}
+
+for(i=10; i>0; i--){
+    contador = contador + i;
+    zero++;
 }

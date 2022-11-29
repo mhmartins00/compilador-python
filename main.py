@@ -20,7 +20,7 @@ reserved = {
     'for'    : 'FOR'
 }
 
-tokens = ['IDEN', 'NUM', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE', 'IGUAL', 'DIFERENTE', 'MENORIGUAL', 'MAIORIGUAL', 'MENOR', 'MAIOR', 'MAIS', 'MENOS', 'MULTIPLICA', 'DIVIDE', 'MAISMAIS', 'MENOSMENOS', 'RECEBE', 'MAISIGUAL', 'MENOSIGUAL', 'MULTIGUAL', 'DIVIDEIGUAL']+ list(reserved.values())
+tokens = ['IDEN', 'NUM', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE', 'ECOLCH', 'DCOLCH', 'IGUAL', 'DIFERENTE', 'MENORIGUAL', 'MAIORIGUAL', 'MENOR', 'MAIOR', 'MAIS', 'MENOS', 'MULTIPLICA', 'DIVIDE', 'MAISMAIS', 'MENOSMENOS', 'RECEBE', 'MAISIGUAL', 'MENOSIGUAL', 'MULTIGUAL', 'DIVIDEIGUAL']+ list(reserved.values())
 
 # caraceres ignorados [nova linha, espaco em branco, tab]
 t_ignore = '\n \t'
@@ -33,6 +33,8 @@ t_EPAREN        = r'\('
 t_DPAREN        = r'\)'
 t_ECHAVE        = r'\{'
 t_DCHAVE        = r'\}'
+t_ECOLCH        = r'\['
+t_DCOLCH        = r'\]'
 
 # Operadores Relacionais 
 t_IGUAL         = r'=='
@@ -67,6 +69,8 @@ t_SWITCH    = r'switch'
 t_CASE      = r'case'
 t_BREAK'    = r'break',
 t_DEFAULT   = r'default'
+t_WHILE     = r'while'
+t_FOR       = r'for'
 '''
 
 # expressao regular para identificadores
@@ -79,7 +83,7 @@ def t_IDEN(t) :
 # expressao regular para numeros int ou float
 def t_NUM(t) :
     r'[\d]+(\.[\d]+)?'
-    return t  
+    return t
 
 def t_error(t):
     print("Caractere ilegal '%s'" % t.value[0])
@@ -98,8 +102,7 @@ def p_num(t):
     t[0]=t[1]
     
 def p_defincao_tipo(t):
-    '''tipo : CHAR
-            | INT
+    '''tipo : INT
             | FLOAT
     '''
     t[0]=t[1]
@@ -188,8 +191,8 @@ def p_atribuicao(t):
     '''
     t[0]=t[1]
 
-def p_encremento_ou_decremento_for(t):
-    '''encremento_ou_decremento_for : variavel operador_atribuicao expressao_matematica
+def p_incremento_ou_decremento_for(t):
+    '''incremento_ou_decremento_for : variavel operador_atribuicao expressao_matematica
                                     | variavel operador_atribuicao var_ou_num
                                     | variavel MAISMAIS
                                     | variavel MENOSMENOS
@@ -200,7 +203,31 @@ def p_encremento_ou_decremento_for(t):
 def p_declaracao_var(t):
     '''declaracao_var : tipo sequencia_var fim
                       | tipo sequencia_var fim declaracao_var
+                      | declaracao_char
     ''' 
+    t[0]=t[1]
+
+# sequencia [a,b,c]
+def p_sequencia_var(t):
+    '''sequencia_var : variavel
+                     | variavel VIRGULA sequencia_var
+    '''
+    t[0]=t[1]
+
+# para declaracao char [char a; char b[1];]
+def p_declaracao_char(t):
+    '''declaracao_char : CHAR sequencia_char fim
+                       | CHAR sequencia_char fim declaracao_var
+    ''' 
+    t[0]=t[1]
+
+# sequencia char [char a; char a[1], b, c[2];]
+def p_sequencia_char(t):
+    '''sequencia_char : variavel
+                      | variavel VIRGULA sequencia_char
+                      | variavel ECOLCH num DCOLCH
+                      | variavel ECOLCH num DCOLCH VIRGULA sequencia_char
+    '''
     t[0]=t[1]
 
 def p_declaracao_if(t):
@@ -213,22 +240,6 @@ def p_declaracao_if(t):
 def p_declaracao_switch(t): 
     '''declaracao_switch : SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case DCHAVE
                          | SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case declaracao_default DCHAVE
-    ''' 
-    t[0]=t[1]
-
-def p_declaracao_while(t):
-    '''declaracao_while : WHILE EPAREN condicao DPAREN ECHAVE comandos DCHAVE
-    ''' 
-    t[0]=t[1]
-
-# for(parametros_for){<comandos>}
-def p_declaracao_for(t):
-    '''declaracao_for : FOR EPAREN parametros_for DPAREN ECHAVE comandos DCHAVE
-    ''' 
-    t[0]=t[1]
-# ini_variável; condição; incremento/decremento
-def p_parametros_for(t):
-    '''parametros_for : atribuicao condicao fim encremento_ou_decremento_for
     ''' 
     t[0]=t[1]
 
@@ -252,11 +263,21 @@ def p_declaracao_default(t):
     ''' 
     t[0]=t[1]
 
-# sequencia [a,b,c]
-def p_sequencia_var(t):
-    '''sequencia_var : variavel
-                     | variavel VIRGULA sequencia_var
-    '''
+def p_declaracao_while(t):
+    '''declaracao_while : WHILE EPAREN condicao DPAREN ECHAVE comandos DCHAVE
+    ''' 
+    t[0]=t[1]
+
+# for(parametros_for){<comandos>}
+def p_declaracao_for(t):
+    '''declaracao_for : FOR EPAREN parametros_for DPAREN ECHAVE comandos DCHAVE
+    ''' 
+    t[0]=t[1]
+
+# ini_variável; condição; incremento/decremento
+def p_parametros_for(t):
+    '''parametros_for : atribuicao condicao fim incremento_ou_decremento_for
+    ''' 
     t[0]=t[1]
 
 def p_error(t):
