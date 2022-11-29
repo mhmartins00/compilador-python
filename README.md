@@ -43,7 +43,7 @@ int d;
 
 
 - Comando de atribuição somente dentro do bloco de IF e SWITCH, ou pode estar fora?
---ex: SÓ DENTRO
+-ok--ex: SÓ DENTRO
 int a;
 
 a = 2;

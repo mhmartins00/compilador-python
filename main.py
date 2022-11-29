@@ -20,7 +20,7 @@ reserved = {
     'for'    : 'FOR'
 }
 
-tokens = ['IDEN', 'NUM', 'ADEL', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE', 'ECOLCH', 'DCOLCH', 'IGUAL', 'DIFERENTE', 'MENORIGUAL', 'MAIORIGUAL', 'MENOR', 'MAIOR', 'MAIS', 'MENOS', 'MULTIPLICA', 'DIVIDE', 'MAISMAIS', 'MENOSMENOS', 'RECEBE', 'MAISIGUAL', 'MENOSIGUAL', 'MULTIGUAL', 'DIVIDEIGUAL']+ list(reserved.values())
+tokens = ['IDEN', 'NUM', 'VIRGULA', 'PONTOVIRGULA', 'DOISPONTOS', 'EPAREN', 'DPAREN', 'ECHAVE', 'DCHAVE', 'ECOLCH', 'DCOLCH', 'IGUAL', 'DIFERENTE', 'MENORIGUAL', 'MAIORIGUAL', 'MENOR', 'MAIOR', 'MAIS', 'MENOS', 'MULTIPLICA', 'DIVIDE', 'MAISMAIS', 'MENOSMENOS', 'RECEBE', 'MAISIGUAL', 'MENOSIGUAL', 'MULTIGUAL', 'DIVIDEIGUAL']+ list(reserved.values())
 
 # caraceres ignorados [nova linha, espaco em branco, tab]
 t_ignore = '\n \t'
@@ -85,11 +85,6 @@ def t_NUM(t) :
     r'[\d]+(\.[\d]+)?'
     return t
 
-# expressao regular para SOMENTE numeros int
-def t_ADEL(t) :
-    r'[0-9]+$'
-    return t
-
 def t_error(t):
     print("Caractere ilegal '%s'" % t.value[0])
     t.lexer.skip(1)
@@ -104,10 +99,6 @@ def p_fim_instrucao(p):
 
 def p_num(t):
     'num : NUM'
-    t[0]=t[1]
-
-def p_adel(t):
-    'adel : ADEL'
     t[0]=t[1]
     
 def p_defincao_tipo(t):
@@ -200,8 +191,8 @@ def p_atribuicao(t):
     '''
     t[0]=t[1]
 
-def p_encremento_ou_decremento_for(t):
-    '''encremento_ou_decremento_for : variavel operador_atribuicao expressao_matematica
+def p_incremento_ou_decremento_for(t):
+    '''incremento_ou_decremento_for : variavel operador_atribuicao expressao_matematica
                                     | variavel operador_atribuicao var_ou_num
                                     | variavel MAISMAIS
                                     | variavel MENOSMENOS
@@ -234,8 +225,8 @@ def p_declaracao_char(t):
 def p_sequencia_char(t):
     '''sequencia_char : variavel
                       | variavel VIRGULA sequencia_char
-                      | variavel ECOLCH adel DCOLCH
-                      | variavel ECOLCH adel DCOLCH VIRGULA sequencia_char
+                      | variavel ECOLCH num DCOLCH
+                      | variavel ECOLCH num DCOLCH VIRGULA sequencia_char
     '''
     t[0]=t[1]
 
@@ -249,22 +240,6 @@ def p_declaracao_if(t):
 def p_declaracao_switch(t): 
     '''declaracao_switch : SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case DCHAVE
                          | SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case declaracao_default DCHAVE
-    ''' 
-    t[0]=t[1]
-
-def p_declaracao_while(t):
-    '''declaracao_while : WHILE EPAREN condicao DPAREN ECHAVE comandos DCHAVE
-    ''' 
-    t[0]=t[1]
-
-# for(parametros_for){<comandos>}
-def p_declaracao_for(t):
-    '''declaracao_for : FOR EPAREN parametros_for DPAREN ECHAVE comandos DCHAVE
-    ''' 
-    t[0]=t[1]
-# ini_variável; condição; incremento/decremento
-def p_parametros_for(t):
-    '''parametros_for : atribuicao condicao fim encremento_ou_decremento_for
     ''' 
     t[0]=t[1]
 
@@ -285,6 +260,23 @@ def p_sequencia_case(t):
 # default: { comandos }
 def p_declaracao_default(t): 
     '''declaracao_default : DEFAULT DOISPONTOS ECHAVE comandos DCHAVE
+    ''' 
+    t[0]=t[1]
+
+def p_declaracao_while(t):
+    '''declaracao_while : WHILE EPAREN condicao DPAREN ECHAVE comandos DCHAVE
+    ''' 
+    t[0]=t[1]
+
+# for(parametros_for){<comandos>}
+def p_declaracao_for(t):
+    '''declaracao_for : FOR EPAREN parametros_for DPAREN ECHAVE comandos DCHAVE
+    ''' 
+    t[0]=t[1]
+
+# ini_variável; condição; incremento/decremento
+def p_parametros_for(t):
+    '''parametros_for : atribuicao condicao fim incremento_ou_decremento_for
     ''' 
     t[0]=t[1]
 
