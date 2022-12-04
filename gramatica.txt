@@ -1,21 +1,128 @@
-//Gramática Etapa 1
+#=====================================#
+|          Gramática Etapa 1          |
+#=====================================#
 
 -- Formato BNF extendido
 G = ({S, IDEN}, {int, char, float, id, ,, ;}, P, S)
 P = {
-        <S>    ::= <TIPO> <IDEN>; [<S>]
-		<TIPO> ::= char | float | int
-        <IDEN> ::= id[, <IDEN>]
+	<S>	::= <TIPO> <IDEN>; [<S>]
+	<TIPO>	::= char | float | int
+	<IDEN>	::= id[, <IDEN>]
     }
 
 -- Gramática do compilador
 G = ({S, PROGRAMA, DECLARACAO_VAR, SEQUENCIA_VAR, TIPO, VARIAVEL, FIM}, {char, int, float, iden, ,, ;}, P, S)
 P = {
-        <S> 			 ::= <PROGRAMA>
-		<PROGRAMA> 		 ::= <DECLARACAO_VAR>
-		<DECLARACAO_VAR> ::= <TIPO> <SEQUENCIA_VAR> <FIM> | <TIPO> <SEQUENCIA_VAR> <FIM> <DECLARACAO_VAR>
-		<TIPO> 			 ::= char | int | float
-		<SEQUENCIA_VAR>  ::= <VARIAVEL> | <VARIAVEL> , <SEQUENCIA_VAR>
-		<VARIAVEL> 		 ::= iden
-		<FIM> 			 ::= ;
+	<S>			::= <PROGRAMA>
+	<PROGRAMA>		::= <DECLARACAO_VAR>
+	<DECLARACAO_VAR>	::= <TIPO> <SEQUENCIA_VAR> <FIM> | <TIPO> <SEQUENCIA_VAR> <FIM> <DECLARACAO_VAR>
+	<TIPO>			::= char | int | float
+	<SEQUENCIA_VAR>		::= <VARIAVEL> | <VARIAVEL> , <SEQUENCIA_VAR>
+	<VARIAVEL>		::= iden
+	<FIM>			::= ;
+    }
+
+#=====================================#
+|          Gramática Etapa 2          |
+#=====================================#
+
+-- Formato BNF extendido
+G = ({S, DECLARACAO_VAR, TIPO, IDEN, DECLARACAO_IF, CONDICAO, COMANDOS, EXPRESSAO_MATEMATICA, DECLARACAO_SWITCH, DECLARACAO_CASE, SEQUENCIA_CASE}, {char, int, float, if, else, switch, case, break, default, id, num, ,, ;, :, (, ), {, }, ==, !=, <=, >=, <, >, +, -, *, /, ++, --, =, +=, -=, *=, /=}, P, S)
+P = {
+	<S>			::= <DECLARACAO_VAR> [<S>] | <DECLARACAO_IF> [<S>] | <DECLARACAO_SWITCH> [<S>]
+	<DECLARACAO_VAR>	::= <TIPO> <IDEN>; [<DECLARACAO_VAR>]
+	<TIPO>			::= char | float | int
+	<IDEN>			::= id[, <IDEN>]
+	<DECLARACAO_IF>		::= if ( <CONDICAO> ) { <COMANDOS> } [else { <COMANDOS> }]
+	<CONDICAO>		::= (id | num) (> | < | >= | <= | == | !=) (id | num)
+	<COMANDOS>		::= id (= | += | -= | *= | /=) (<EXPRESSAO_MATEMATICA>); | id (++ | --);
+	<EXPRESSAO_MATEMATICA>	::= (id | num) [(+ | - | * | /) <EXPRESSAO_MATEMATICA>]
+	<DECLARACAO_SWITCH>	::= switch ( id ) { <DECLARACAO_CASE> [default : { <COMANDOS> }] }
+	<DECLARACAO_CASE>	::= <SEQUENCIA_CASE> { <COMANDOS> break; } [<DECLARACAO_CASE>]
+	<SEQUENCIA_CASE>	::= case (id | num) : [<SEQUENCIA_CASE>]
+    }
+
+-- Gramática do compilador
+G = ({S, FIM, NUM, TIPO, VARIAVEL, PROGRAMA, SEQUENCIA_CODIGO, CODIGO, CONDICAO, COMANDOS, EXPRESSAO_RELACIONAL, EXPRESSAO_MATEMATICA, OPERACAO_MATEMATICA, VAR_OU_NUM, OPERADOR_ATRIBUICAO, ATRIBUICAO, DECLARACAO_VAR, DECLARACAO_IF, DECLARACAO_SWITCH, DECLARACAO_CASE, SEQUENCIA_CASE, DECLARACAO_DEFAULT, SEQUENCIA_VAR}, {char, int, float, if, else, switch, case, break, default, iden, num, ,, ;, :, (, ), {, }, ==, !=, <=, >=, <, >, +, -, *, /, ++, --, =, +=, -=, *=, /=}, P, S)
+P = {
+	<S>			::= <PROGRAMA>
+	<FIM>			::= ;
+	<NUM>			::= num
+	<TIPO>			::= char | int | float
+	<VARIAVEL>		::= iden
+	<PROGRAMA>		::= <SEQUENCIA_CODIGO>
+	<SEQUENCIA_CODIGO>	::= <CODIGO> <SEQUENCIA_CODIGO> | <CODIGO>
+	<CODIGO>		::= <DECLARACAO_VAR> | <DECLARACAO_IF> | <DECLARACAO_SWITCH>
+	<CONDICAO>		::= <EXPRESSAO_RELACIONAL>
+	<COMANDOS>		::= <ATRIBUICAO> <COMANDOS> | <ATRIBUICAO>
+	<EXPRESSAO_RELACIONAL>	::= <VAR_OU_NUM> > <VAR_OU_NUM> | <VAR_OU_NUM> < <VAR_OU_NUM> | <VAR_OU_NUM> >= <VAR_OU_NUM> | <VAR_OU_NUM> <= <VAR_OU_NUM> | <VAR_OU_NUM> == <VAR_OU_NUM> | <VAR_OU_NUM> != <VAR_OU_NUM>
+	<EXPRESSAO_MATEMATICA>	::= <VAR_OU_NUM> | <VAR_OU_NUM> <OPERACAO_MATEMATICA> <EXPRESSAO_MATEMATICA>
+	<OPERACAO_MATEMATICA>	::= + | - | * | /
+	<VAR_OU_NUM>		::= <VARIAVEL> | <NUM>
+	<OPERADOR_ATRIBUICAO>	::= = | += | -= | *= | /=
+	<ATRIBUICAO>		::= <VARIAVEL> <OPERADOR_ATRIBUICAO> <EXPRESSAO_MATEMATICA> <FIM> | <VARIAVEL> <OPERADOR_ATRIBUICAO> <VAR_OU_NUM> <FIM> | <VARIAVEL> ++ <FIM> | <VARIAVEL> -- <FIM>
+	<DECLARACAO_VAR>	::= <TIPO> <SEQUENCIA_VAR> <FIM> | <TIPO> <SEQUENCIA_VAR> <FIM> <DECLARACAO_VAR>
+	<DECLARACAO_IF>		::= if ( <CONDICAO> ) { <COMANDOS> } | if ( <CONDICAO> ) { <COMANDOS> } else { <COMANDOS> }
+	<DECLARACAO_SWITCH>	::= switch ( <VARIAVEL> ) { <DECLARACAO_CASE> } | switch ( <VARIAVEL> ) { <DECLARACAO_CASE> <DECLARACAO_DEFAULT> }
+	<DECLARACAO_CASE>	::= <SEQUENCIA_CASE> { <COMANDOS> break <FIM> } <DECLARACAO_CASE> | <SEQUENCIA_CASE> { <COMANDOS> break <FIM> }
+	<SEQUENCIA_CASE>	::= case <VAR_OU_NUM> : <SEQUENCIA_CASE> | case <VAR_OU_NUM> :
+	<DECLARACAO_DEFAULT>	::= default : { <COMANDOS> }
+	<SEQUENCIA_VAR>		::= <VARIAVEL> | <VARIAVEL> , <SEQUENCIA_VAR>
+    }
+
+#=====================================#
+|          Gramática Etapa 3          |
+#=====================================#
+
+-- Formato BNF extendido
+G = ({S, DECLARACAO_VAR, DECLARACAO_CHAR, TIPO, IDEN, DECLARACAO_IF, CONDICAO, COMANDOS, EXPRESSAO_MATEMATICA, DECLARACAO_SWITCH, DECLARACAO_CASE, SEQUENCIA_CASE, DECLARACAO_WHILE, DECLARACAO_FOR}, {char, int, float, if, else, switch, case, break, default, while, for, id, num, ,, ;, :, (, ), {, }, [, ], ==, !=, <=, >=, <, >, +, -, *, /, ++, --, =, +=, -=, *=, /=}, P, S)
+P = {
+	<S>						::= <DECLARACAO_VAR> [<S>] | <DECLARACAO_IF> [<S>] | <DECLARACAO_SWITCH> [<S>] | <DECLARACAO_WHILE> [<S>] | <DECLARACAO_FOR> [<S>]
+	<DECLARACAO_VAR>		::= <TIPO> <IDEN>; [<DECLARACAO_VAR>] | char <DECLARACAO_CHAR>; [<DECLARACAO_VAR>]
+	<DECLARACAO_CHAR>		::= <IDEN> [[num]] [, <DECLARACAO_CHAR>]
+	<TIPO>					::= float | int
+	<IDEN>					::= id[, <IDEN>]
+	<DECLARACAO_IF>			::= if ( <CONDICAO> ) { <COMANDOS> } [else { <COMANDOS> }]
+	<CONDICAO>				::= (id | num) (> | < | >= | <= | == | !=) (id | num)
+	<COMANDOS>				::= id (= | += | -= | *= | /=) (<EXPRESSAO_MATEMATICA>); | id (++ | --);
+	<EXPRESSAO_MATEMATICA>	::= (id | num) [(+ | - | * | /) <EXPRESSAO_MATEMATICA>]
+	<DECLARACAO_SWITCH>		::= switch ( id ) { <DECLARACAO_CASE> [default : { <COMANDOS> }] }
+	<DECLARACAO_CASE>		::= <SEQUENCIA_CASE> { <COMANDOS> break; } [<DECLARACAO_CASE>]
+	<SEQUENCIA_CASE>		::= case (id | num) : [<SEQUENCIA_CASE>]
+	<DECLARACAO_WHILE>		::= while ( <CONDICAO> ) { <COMANDOS> }
+	<DECLARACAO_FOR>		::= for ( <COMANDOS> <CONDICAO>; id (= | += | -= | *= | /=) (<EXPRESSAO_MATEMATICA>) | id (++ | --) ) { <COMANDOS> }
+    }
+
+-- Gramática do compilador
+G = ({S, FIM, NUM, TIPO, VARIAVEL, PROGRAMA, SEQUENCIA_CODIGO, CODIGO, CONDICAO, COMANDOS, EXPRESSAO_RELACIONAL, EXPRESSAO_MATEMATICA, OPERACAO_MATEMATICA, VAR_OU_NUM, OPERADOR_ATRIBUICAO, ATRIBUICAO, DECLARACAO_VAR, DECLARACAO_CHAR, SEQUENCIA_CHAR, DECLARACAO_IF, DECLARACAO_SWITCH, DECLARACAO_CASE, SEQUENCIA_CASE, DECLARACAO_DEFAULT, SEQUENCIA_VAR, DECLARACAO_WHILE, DECLARACAO_FOR, PARAMETROS_FOR}, {char, int, float, if, else, switch, case, break, default, while, for, iden, num, ,, ;, :, (, ), {, }, [, ], ==, !=, <=, >=, <, >, +, -, *, /, ++, --, =, +=, -=, *=, /=}, P, S)
+P = {
+	<S>				::= <PROGRAMA>
+	<FIM>			::= ;
+	<NUM>			::= num
+	<TIPO>			::= int | float
+	<VARIAVEL>		::= iden
+	<PROGRAMA>		::= <SEQUENCIA_CODIGO>
+	<SEQUENCIA_CODIGO>	::= <CODIGO> <SEQUENCIA_CODIGO> | <CODIGO>
+	<CODIGO>		::= <DECLARACAO_VAR> | <DECLARACAO_IF> | <DECLARACAO_SWITCH> | <DECLARACAO_WHILE> | <DECLARACAO_FOR>
+	<CONDICAO>		::= <EXPRESSAO_RELACIONAL>
+	<COMANDOS>		::= <ATRIBUICAO> <COMANDOS> | <ATRIBUICAO>
+	<EXPRESSAO_RELACIONAL>	::= <VAR_OU_NUM> > <VAR_OU_NUM> | <VAR_OU_NUM> < <VAR_OU_NUM> | <VAR_OU_NUM> >= <VAR_OU_NUM> | <VAR_OU_NUM> <= <VAR_OU_NUM> | <VAR_OU_NUM> == <VAR_OU_NUM> | <VAR_OU_NUM> != <VAR_OU_NUM>
+	<EXPRESSAO_MATEMATICA>	::= <VAR_OU_NUM> | <VAR_OU_NUM> <OPERACAO_MATEMATICA> <EXPRESSAO_MATEMATICA>
+	<OPERACAO_MATEMATICA>	::= + | - | * | /
+	<VAR_OU_NUM>		::= <VARIAVEL> | <NUM>
+	<OPERADOR_ATRIBUICAO>	::= = | += | -= | *= | /=
+	<ATRIBUICAO>		::= <VARIAVEL> <OPERADOR_ATRIBUICAO> <EXPRESSAO_MATEMATICA> <FIM> | <VARIAVEL> <OPERADOR_ATRIBUICAO> <VAR_OU_NUM> <FIM> | <VARIAVEL> ++ <FIM> | <VARIAVEL> -- <FIM>
+	<DECLARACAO_VAR>	::= <TIPO> <SEQUENCIA_VAR> <FIM> | <TIPO> <SEQUENCIA_VAR> <FIM> <DECLARACAO_VAR>
+	<DECLARACAO_CHAR>	::= char <SEQUENCIA_CHAR> <FIM> | char <SEQUENCIA_CHAR> <FIM> <DECLARACAO_VAR>
+	<SEQUENCIA_CHAR>	::= <VARIAVEL> | <VARIAVEL> , <SEQUENCIA_CHAR> | <VARIAVEL> [ <NUM> ] | <VARIAVEL> [ <NUM> ] , <SEQUENCIA_CHAR>
+	<DECLARACAO_IF>		::= if ( <CONDICAO> ) { <COMANDOS> } | if ( <CONDICAO> ) { <COMANDOS> } else { <COMANDOS> }
+	<DECLARACAO_SWITCH>	::= switch ( <VARIAVEL> ) { <DECLARACAO_CASE> } | switch ( <VARIAVEL> ) { <DECLARACAO_CASE> <DECLARACAO_DEFAULT> }
+	<DECLARACAO_CASE>	::= <SEQUENCIA_CASE> { <COMANDOS> break <FIM> } <DECLARACAO_CASE> | <SEQUENCIA_CASE> { <COMANDOS> break <FIM> }
+	<SEQUENCIA_CASE>	::= case <VAR_OU_NUM> : <SEQUENCIA_CASE> | case <VAR_OU_NUM> :
+	<DECLARACAO_DEFAULT>	::= default : { <COMANDOS> }
+	<SEQUENCIA_VAR>		::= <VARIAVEL> | <VARIAVEL> , <SEQUENCIA_VAR>
+	<DECLARACAO_WHILE>	::= while ( <CONDICAO> ) { <COMANDOS> }
+	<DECLARACAO_FOR>	::= for ( <PARAMETROS_FOR> ) { <COMANDOS> }
+	<PARAMETROS_FOR>	::= <ATRIBUICAO> <CONDICAO> <FIM>
+	<INCREMENTO_OU_DECREMENTO_FOR>	::= <VARIAVEL> <OPERADOR_ATRIBUICAO> <EXPRESSAO_MATEMATICA> | <VARIAVEL> <OPERADOR_ATRIBUICAO> <VAR_OU_NUM> | <VARIAVEL> ++ | <VARIAVEL> --
     }

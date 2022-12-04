@@ -1,11 +1,87 @@
 int a;
 int b;
 
+
+
 char c;
 float d;
 char teste_char;
 int a,b,c,d;
 
+char z[0];
+char a, b[10], c[10];
+char d, c[1], e;
+
 float dado2;
 
 int abc;
+
+if(a>10) {
+    a = douglas - lala;
+    a = teste - abab;
+} else{
+    b = a;
+    a++;
+}
+
+if(j>=10) {
+    k++;
+} else{
+    k--;
+}
+
+if(m<=10) {
+    n = q + 1;
+} else{
+    n = q - 1;
+}
+
+if(a == a) {
+    a += b + c + 20;
+}
+
+if(a == 1.226562) {
+    a += b + c + 20.87145;
+    nome -= 21;
+}
+
+switch(nome) {
+    case murillo: {
+        sobrenome = martins;
+        break;
+    } 
+    case douglas: {
+        sobrenome = moeller;
+        break;
+    }
+    case 1:
+    case 1.2326551564632134:
+    case coordenadora:
+    case professora: {
+        sobrenome = adelina;
+        break;
+    }
+    default: {
+        sobrenome = nenhum;
+    }
+}
+
+if(a < y) {
+    y = 1.05 + b - 18 * idade;
+}
+
+while(idade == 18){
+    maiordeidade = 1;
+    menor = nao;
+}
+
+
+for(i=1+2; i<10; i=i+3){
+    contador = contador + i;
+    zero++;
+}
+
+for(i=10; i>0; i--){
+    contador = contador + i;
+    zero++;
+}
