@@ -1,4 +1,4 @@
-# COMPILADORES - ETAPA 1
+# COMPILADORES
 # NOMES: DOUGLAS MOELLER, MURILLO MARTINS
 import sys
 sys.path.append("../..")
@@ -292,9 +292,6 @@ parser = yacc.yacc(start='programa')
 
 print("#---------------------------#")
 print("|   Compilador DCM / MHG    |")
-print("|                           |")
-print("| *Digite o nome do arquivo |")
-print("| * no comando              |")
 print("#---------------------------#\n")
 
 # com leitura de arquivo direto no comando pelo terminal
