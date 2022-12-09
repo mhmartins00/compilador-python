@@ -1,9 +1,22 @@
 # COMPILADORES
 # NOMES: DOUGLAS MOELLER, MURILLO MARTINS
 import sys
-sys.path.append("../..")
 import ply.lex as lex
 import ply.yacc as yacc
+
+sys.path.append("../..")
+
+################### PARA DEBUG LOG ########################
+# Set up a logging object
+import logging
+logging.basicConfig(
+    level = logging.DEBUG,
+    filename = "parselog.txt",
+    filemode = "w",
+    format = "%(filename)10s:%(lineno)4d:%(message)s"
+)
+log = logging.getLogger()
+
 
 #################### ANALISADOR LEXICO ####################
 reserved = {
@@ -89,7 +102,11 @@ def t_error(t):
     print("Caractere ilegal '%s'" % t.value[0])
     t.lexer.skip(1)
 
+## SEM DEBUG LOG
 lexer = lex.lex()
+
+## COM DEBUG LOG
+#lexer = lex.lex(debug=True,debuglog=log)
 
 #################### ANALISADOR SINTATICO E REGRAS ####################
 # criamos as regras bem especificas para facilitar a manutencao e o desenvolvimento futuro
@@ -286,7 +303,11 @@ def p_error(t):
     # raise TypeError('parser error: %s' % t.value)
 
 # definicao para o start das regras
+## SEM DEBUG LOG
 parser = yacc.yacc(start='programa')
+
+## COM DEBUG LOG
+#parser = yacc.yacc(method='LR',start='programa',debuglog=log,debug=True)
 
 #################### INICIO DO PROGRAMA COM LEITURA DE ARQUIVO ####################
 

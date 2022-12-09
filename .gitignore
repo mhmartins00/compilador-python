@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 parser.out
 parsetab.py
+parselog.txt
 
 # C extensions
 *.so
