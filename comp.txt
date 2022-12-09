@@ -1,16 +1,14 @@
 int a;
 int b;
 
-
-
 char c;
 float d;
-char teste_char;
+char _teste_char;
 int a,b,c,d;
 
 char z[0];
 char a, b[10], c[10];
-char d, c[1], e;
+char _, _[1], _;
 
 float dado2;
 
@@ -54,15 +52,15 @@ switch(nome) {
         sobrenome = moeller;
         break;
     }
-    case 1:
+    case 1: case dois:
     case 1.2326551564632134:
-    case coordenadora:
+    case compiladores:
     case professora: {
         sobrenome = adelina;
         break;
     }
     default: {
-        sobrenome = nenhum;
+        sobrenome = raupp;
     }
 }
 
@@ -79,6 +77,11 @@ while(idade == 18){
 for(i=1+2; i<10; i=i+3){
     contador = contador + i;
     zero++;
+}
+
+for(_=1+2; _<10; _=_+3){
+    _ = _ + _;
+    __++;
 }
 
 for(i=10; i>0; i--){

@@ -8,14 +8,14 @@ sys.path.append("../..")
 
 ################### PARA DEBUG LOG ########################
 # Set up a logging object
-import logging
-logging.basicConfig(
-    level = logging.DEBUG,
-    filename = "parselog.txt",
-    filemode = "w",
-    format = "%(filename)10s:%(lineno)4d:%(message)s"
-)
-log = logging.getLogger()
+# import logging
+# logging.basicConfig(
+#     level = logging.DEBUG,
+#     filename = "parselog.txt",
+#     filemode = "w",
+#     format = "%(filename)10s:%(lineno)4d:%(message)s"
+# )
+# log = logging.getLogger()
 
 
 #################### ANALISADOR LEXICO ####################
@@ -253,14 +253,14 @@ def p_declaracao_if(t):
     ''' 
     t[0]=t[1]
 
-# switch (variavel) { declaracao_case }
+# switch (<variavel>) { <declaracao_case> }
 def p_declaracao_switch(t): 
     '''declaracao_switch : SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case DCHAVE
                          | SWITCH EPAREN variavel DPAREN ECHAVE declaracao_case declaracao_default DCHAVE
     ''' 
     t[0]=t[1]
 
-# sequencia_case { comandos break; }
+# sequencia_case { <comandos> break; }
 def p_declaracao_case(t): 
     '''declaracao_case : sequencia_case ECHAVE comandos BREAK fim DCHAVE declaracao_case
                        | sequencia_case ECHAVE comandos BREAK fim DCHAVE
@@ -274,7 +274,7 @@ def p_sequencia_case(t):
     ''' 
     t[0]=t[1]
 
-# default: { comandos }
+# default: { <comandos> }
 def p_declaracao_default(t): 
     '''declaracao_default : DEFAULT DOISPONTOS ECHAVE comandos DCHAVE
     ''' 
@@ -285,13 +285,13 @@ def p_declaracao_while(t):
     ''' 
     t[0]=t[1]
 
-# for(parametros_for){<comandos>}
+# for(<parametros_for>){<comandos>}
 def p_declaracao_for(t):
     '''declaracao_for : FOR EPAREN parametros_for DPAREN ECHAVE comandos DCHAVE
     ''' 
     t[0]=t[1]
 
-# ini_variável; condição; incremento/decremento
+# ini_variável; <condição>; <incremento/decremento>
 def p_parametros_for(t):
     '''parametros_for : atribuicao condicao fim incremento_ou_decremento_for
     ''' 
